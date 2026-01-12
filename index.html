@@ -1,0 +1,1868 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>தாஸ் பொது சேவை மையம் - தூத்துக்குடி</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary-color: #0056b3; /* நீலம் - நம்பிக்கை */
+            --secondary-color: #ff9933; /* ஆரஞ்சு - சேவை */
+            --text-color: #333;
+            --light-bg: #f4f7f6;
+            --white: #ffffff;
+            --danger: #dc3545;
+            --success: #28a745;
+            --warning: #ffc107;
+            --info: #17a2b8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--white);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .top-bar {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 5px 20px;
+            font-size: 0.9rem;
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .logo span {
+            font-size: 0.9rem;
+            color: #666;
+            display: block;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--secondary-color);
+        }
+
+        .btn-admin {
+            background-color: var(--text-color);
+            color: var(--white);
+            padding: 5px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            border: none;
+        }
+
+        /* News Scroller */
+        .news-ticker {
+            background-color: #333;
+            color: #fff;
+            overflow: hidden;
+            padding: 10px 0;
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .ticker-content {
+            display: inline-block;
+            padding-left: 100%;
+            animation: ticker 20s linear infinite;
+        }
+
+        @keyframes ticker {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-100%, 0, 0); }
+        }
+
+        /* Hero Slider */
+        .hero-slider {
+            position: relative;
+            max-width: 1200px;
+            margin: 20px auto;
+            height: 400px;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .slide.active {
+            opacity: 1;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            margin: 40px 0 20px;
+            color: var(--primary-color);
+            font-size: 2rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: var(--secondary-color);
+            margin: 10px auto;
+        }
+
+        /* Services Grid */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .service-card {
+            background: var(--white);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            border-top: 4px solid var(--secondary-color);
+            position: relative;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .service-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .service-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .service-fee {
+            background: var(--secondary-color);
+            color: var(--white);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        .rating {
+            color: var(--warning);
+            margin-top: 5px;
+        }
+
+        .stars {
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .docs-list {
+            list-style: none;
+            margin-bottom: 15px;
+        }
+
+        .docs-list li {
+            margin-bottom: 5px;
+            padding-left: 20px;
+            position: relative;
+            font-size: 0.9rem;
+        }
+
+        .docs-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--success);
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-download {
+            background-color: var(--primary-color);
+            color: var(--white);
+            flex: 1;
+        }
+
+        .btn-whatsapp {
+            background-color: #25D366;
+            color: var(--white);
+        }
+
+        /* Status Badges */
+        .status-badge {
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-top: 5px;
+            display: inline-block;
+        }
+
+        .status-pending { background: #fff3cd; color: #856404; }
+        .status-processing { background: #cce5ff; color: #004085; }
+        .status-completed { background: #d4edda; color: #155724; }
+        .status-rejected { background: #f8d7da; color: #721c24; }
+
+        /* Stats Dashboard */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .stat-label {
+            color: #666;
+            margin-top: 5px;
+        }
+
+        /* Charts */
+        .chart-container {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        /* Complaints Form */
+        .complaint-form {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        /* Calendar */
+        .calendar {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .calendar-days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+        }
+
+        .calendar-day {
+            padding: 10px;
+            text-align: center;
+            border-radius: 5px;
+        }
+
+        .calendar-day.event {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* Agent Registration */
+        .agent-form {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        /* YouTube Section */
+        .video-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 ratio */
+            height: 0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Admin Panel Styles */
+        #admin-panel {
+            display: none; /* Hidden by default */
+            background: var(--white);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #eee;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 1rem;
+            color: #666;
+            white-space: nowrap;
+        }
+
+        .tab-btn.active {
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+            font-weight: bold;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            overflow-x: auto;
+            display: block;
+        }
+
+        .admin-table th, .admin-table td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .btn-delete {
+            background-color: var(--danger);
+            color: var(--white);
+            padding: 5px 10px;
+        }
+
+        .btn-edit {
+            background-color: var(--info);
+            color: var(--white);
+            padding: 5px 10px;
+            margin-right: 5px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #222;
+            color: #fff;
+            padding: 40px 20px;
+            margin-top: 50px;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+            gap: 20px;
+        }
+
+        .footer-section h3 {
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+        }
+
+        .contact-list li {
+            list-style: none;
+            margin-bottom: 10px;
+        }
+
+        /* Toast Notification */
+        .toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 2px;
+            padding: 16px;
+            position: fixed;
+            z-index: 1001;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+        }
+
+        .toast.show {
+            visibility: visible;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+
+        @keyframes fadein {
+            from {bottom: 0; opacity: 0;}
+            to {bottom: 30px; opacity: 1;}
+        }
+
+        @keyframes fadeout {
+            from {bottom: 30px; opacity: 1;}
+            to {bottom: 0; opacity: 0;}
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1002;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: var(--white);
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 500px;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            right: 15px;
+            top: 10px;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            nav ul {
+                margin-top: 10px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .admin-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <div class="top-bar">
+        <span>மத்திய & மாநில அரசு அங்கீகாரம் பெற்றது</span>
+        <span id="current-date"></span>
+    </div>
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <h1>தாஸ் பொது சேவை மையம்</h1>
+                <span>Dass Public Service Centre</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#" onclick="showPage('home')">முகப்பு</a></li>
+                    <li><a href="#services">சேவைகள்</a></li>
+                    <li><a href="#complaints">புகார்கள்</a></li>
+                    <li><a href="#agents">ஏஜெண்ட் பதிவு</a></li>
+                    <li><a href="#calendar">நிகழ்வுகள்</a></li>
+                    <li><a href="#videos">வீடியோ</a></li>
+                    <li><a href="#contact">தொடர்பு</a></li>
+                    <li><button class="btn-admin" onclick="toggleAdmin()">நிர்வாகம்</button></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- News Scroller -->
+    <div class="news-ticker">
+        <div class="ticker-content" id="news-ticker-content">
+            வணக்கம்! தாஸ் பொது சேவை மையத்திற்கு வரவேற்கிறோம். அனைத்து அரசு சேவைகளும் விரைவாக கிடைக்கும்.
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main id="main-content">
+        
+        <!-- Photo Slider -->
+        <section id="slider-section">
+            <div class="hero-slider" id="hero-slider">
+                <!-- Slides will be injected by JS -->
+            </div>
+        </section>
+
+        <!-- Statistics Dashboard -->
+        <section id="dashboard" class="container" style="display: none;">
+            <h2 class="section-title">புள்ளிவிவரங்கள்</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="total-services">0</div>
+                    <div class="stat-label">மொத்த சேவைகள்</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="today-applications">0</div>
+                    <div class="stat-label">இன்றைய விண்ணப்பங்கள்</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="pending-applications">0</div>
+                    <div class="stat-label">நிலுவையில்</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="completed-applications">0</div>
+                    <div class="stat-label">நிறைவுற்றவை</div>
+                </div>
+            </div>
+
+            <!-- Charts -->
+            <div class="chart-container">
+                <canvas id="servicesChart"></canvas>
+            </div>
+        </section>
+
+        <div class="container">
+            <!-- Services Section -->
+            <h2 class="section-title" id="services">எங்கள் சேவைகள்</h2>
+            <div class="services-grid" id="services-list">
+                <!-- Services cards will be injected by JS -->
+            </div>
+
+            <!-- Application Status Section -->
+            <h2 class="section-title">விண்ணப்ப நிலை</h2>
+            <div class="form-group">
+                <input type="text" id="tracking-id" placeholder="உங்கள் டிராக்கிங் ஐடியை உள்ளிடவும்" style="width: 300px; max-width: 100%;">
+                <button class="btn btn-download" onclick="trackApplication()">நிலையை பார்க்க</button>
+            </div>
+            <div id="tracking-result" style="margin-top: 20px;"></div>
+
+            <!-- Complaints Section -->
+            <h2 class="section-title" id="complaints">புகார்கள் / பரிந்துரைகள்</h2>
+            <div class="complaint-form">
+                <form id="complaint-form" onsubmit="submitComplaint(event)">
+                    <div class="form-group">
+                        <label>உங்கள் பெயர்</label>
+                        <input type="text" id="complaint-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>தொலைபேசி எண்</label>
+                        <input type="tel" id="complaint-phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label>புகார் / பரிந்துரை</label>
+                        <textarea id="complaint-text" rows="4" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-download">சமர்ப்பிக்க</button>
+                </form>
+            </div>
+
+            <!-- Agent Registration -->
+            <h2 class="section-title" id="agents">ஏஜெண்ட் பதிவு</h2>
+            <div class="agent-form">
+                <form id="agent-form" onsubmit="registerAgent(event)">
+                    <div class="form-group">
+                        <label>ஏஜெண்ட் பெயர்</label>
+                        <input type="text" id="agent-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>தொலைபேசி எண்</label>
+                        <input type="tel" id="agent-phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label>முகவரி</label>
+                        <textarea id="agent-address" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>ஆதார் எண்</label>
+                        <input type="text" id="agent-aadhar" required>
+                    </div>
+                    <button type="submit" class="btn btn-download">பதிவு செய்க</button>
+                </form>
+            </div>
+
+            <!-- Calendar Section -->
+            <h2 class="section-title" id="calendar">முக்கிய நிகழ்வுகள்</h2>
+            <div class="calendar">
+                <div class="calendar-header">
+                    <button onclick="changeMonth(-1)">←</button>
+                    <h3 id="current-month"></h3>
+                    <button onclick="changeMonth(1)">→</button>
+                </div>
+                <div class="calendar-days" id="calendar-days"></div>
+            </div>
+
+            <!-- Videos Section -->
+            <h2 class="section-title" id="videos">கல்வி மற்றும் தகவல் வீடியோக்கள்</h2>
+            <div class="video-container" id="video-list">
+                <!-- Videos will be injected by JS -->
+            </div>
+        </div>
+
+        <!-- Admin Panel -->
+        <section id="admin-panel" class="container" style="display: none; margin-top: 30px;">
+            <div class="admin-header">
+                <h2>நிர்வாகக் கட்டுப்பாட்டு பலகை</h2>
+                <button class="btn btn-delete" onclick="toggleAdmin()">வெளியேறு</button>
+            </div>
+
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab('tab-dashboard')">டாஷ்போர்டு</button>
+                <button class="tab-btn" onclick="switchTab('tab-services')">சேவைகள்</button>
+                <button class="tab-btn" onclick="switchTab('tab-applications')">விண்ணப்பங்கள்</button>
+                <button class="tab-btn" onclick="switchTab('tab-news')">செய்திகள்</button>
+                <button class="tab-btn" onclick="switchTab('tab-photos')">புகைப்படங்கள்</button>
+                <button class="tab-btn" onclick="switchTab('tab-videos')">வீடியோக்கள்</button>
+                <button class="tab-btn" onclick="switchTab('tab-complaints')">புகார்கள்</button>
+                <button class="tab-btn" onclick="switchTab('tab-agents')">ஏஜெண்ட்கள்</button>
+                <button class="tab-btn" onclick="switchTab('tab-password')">பாஸ்வேர்டு</button>
+            </div>
+
+            <!-- Dashboard Tab -->
+            <div id="tab-dashboard" class="tab-content">
+                <h3>நிர்வாக புள்ளிவிவரங்கள்</h3>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" id="admin-total-services">0</div>
+                        <div class="stat-label">சேவைகள்</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="admin-total-applications">0</div>
+                        <div class="stat-label">விண்ணப்பங்கள்</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="admin-pending-complaints">0</div>
+                        <div class="stat-label">நிலுவை புகார்கள்</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="admin-total-agents">0</div>
+                        <div class="stat-label">ஏஜெண்ட்கள்</div>
+                    </div>
+                </div>
+
+                <!-- Application Status Chart -->
+                <div class="chart-container">
+                    <canvas id="adminChart"></canvas>
+                </div>
+
+                <!-- Send Bulk Notification -->
+                <h3 style="margin-top: 30px;">நினைவூட்டல் அனுப்பு</h3>
+                <div class="form-group">
+                    <label>நினைவூட்டல் செய்தி</label>
+                    <textarea id="notification-message" rows="3" placeholder="வாட்ஸ்அப் / எஸ்எம்எஸ் செய்தி"></textarea>
+                </div>
+                <button class="btn btn-download" onclick="sendBulkNotification()">அனைவருக்கும் அனுப்பு</button>
+            </div>
+
+            <!-- Services Management Tab -->
+            <div id="tab-services" class="tab-content">
+                <h3>சேவை சேர்க்க / திருத்த</h3>
+                <form id="service-form" onsubmit="handleServiceSubmit(event)">
+                    <input type="hidden" id="service-id">
+                    <div class="form-group">
+                        <label>சேவை பெயர்</label>
+                        <input type="text" id="s-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>கட்டணம் (Fee)</label>
+                        <input type="text" id="s-fee" required>
+                    </div>
+                    <div class="form-group">
+                        <label>தேவையான ஆவணங்கள் (கமாவால் பிரிக்கவும்)</label>
+                        <input type="text" id="s-docs" placeholder="உதாரணம்: ஆதார், புகைப்படம்">
+                    </div>
+                    <div class="form-group">
+                        <label>விண்ணப்பப் படிவம் பதிவிறக்க லிங்க் (URL)</label>
+                        <input type="text" id="s-link" placeholder="https://...">
+                    </div>
+                    <div class="form-group">
+                        <label>சராசரி செயலாக்க நேரம் (நாட்கள்)</label>
+                        <input type="number" id="s-processing-time" min="1" max="30" value="7">
+                    </div>
+                    <button type="submit" class="btn btn-download">சேமி</button>
+                    <button type="button" class="btn btn-delete" onclick="resetForm()">ரத்து செய்</button>
+                </form>
+
+                <h3>சேவைகள் பட்டியல்</h3>
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>சேவை</th>
+                            <th>கட்டணம்</th>
+                            <th>செயலாக்க நேரம்</th>
+                            <th>மதிப்பீடு</th>
+                            <th>செயல்கள்</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admin-service-list"></tbody>
+                </table>
+            </div>
+
+            <!-- Applications Management Tab -->
+            <div id="tab-applications" class="tab-content" style="display:none;">
+                <h3>விண்ணப்பங்கள் நிர்வகிக்க</h3>
+                <div class="form-group">
+                    <input type="text" id="search-application" placeholder="பெயர் / தொலைபேசி / டிராக்கிங் ஐடி" onkeyup="searchApplications()">
+                </div>
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>டிராக்கிங் ஐடி</th>
+                            <th>பெயர்</th>
+                            <th>சேவை</th>
+                            <th>தேதி</th>
+                            <th>நிலை</th>
+                            <th>செயல்கள்</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admin-application-list"></tbody>
+                </table>
+            </div>
+
+            <!-- News Management Tab -->
+            <div id="tab-news" class="tab-content" style="display:none;">
+                <h3>செய்தி சுழற்சி</h3>
+                <form onsubmit="handleNewsSubmit(event)">
+                    <div class="form-group">
+                        <label>புதிய செய்தி</label>
+                        <input type="text" id="news-input" required>
+                    </div>
+                    <button type="submit" class="btn btn-download">சேர்</button>
+                </form>
+                <ul id="admin-news-list" style="margin-top:20px; padding-left:20px;"></ul>
+            </div>
+
+            <!-- Photos Management Tab -->
+            <div id="tab-photos" class="tab-content" style="display:none;">
+                <h3>ஸ்லைடர் படங்கள்</h3>
+                <form onsubmit="handlePhotoSubmit(event)">
+                    <div class="form-group">
+                        <label>பட URL (Image Link)</label>
+                        <input type="text" id="photo-input" placeholder="https://..." required>
+                    </div>
+                    <button type="submit" class="btn btn-download">படம் சேர்</button>
+                </form>
+                <div id="admin-photo-list" style="margin-top:20px; display:flex; gap:10px; flex-wrap:wrap;"></div>
+            </div>
+
+            <!-- Videos Management Tab -->
+            <div id="tab-videos" class="tab-content" style="display:none;">
+                <h3>யூடியூப் வீடியோக்கள்</h3>
+                <form onsubmit="handleVideoSubmit(event)">
+                    <div class="form-group">
+                        <label>வீடியோ URL (YouTube Link)</label>
+                        <input type="text" id="video-input" placeholder="https://www.youtube.com/watch?v=..." required>
+                    </div>
+                    <button type="submit" class="btn btn-download">வீடியோ சேர்</button>
+                </form>
+                <div id="admin-video-list" style="margin-top:20px; display:flex; gap:10px; flex-wrap:wrap;"></div>
+            </div>
+
+            <!-- Complaints Management Tab -->
+            <div id="tab-complaints" class="tab-content" style="display:none;">
+                <h3>புகார்கள் மற்றும் பரிந்துரைகள்</h3>
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>தேதி</th>
+                            <th>பெயர்</th>
+                            <th>தொலைபேசி</th>
+                            <th>புகார்</th>
+                            <th>நிலை</th>
+                            <th>செயல்கள்</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admin-complaint-list"></tbody>
+                </table>
+            </div>
+
+            <!-- Agents Management Tab -->
+            <div id="tab-agents" class="tab-content" style="display:none;">
+                <h3>பதிவுசெய்த ஏஜெண்ட்கள்</h3>
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>பதிவு எண்</th>
+                            <th>பெயர்</th>
+                            <th>தொலைபேசி</th>
+                            <th>முகவரி</th>
+                            <th>தேதி</th>
+                            <th>செயல்கள்</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admin-agent-list"></tbody>
+                </table>
+            </div>
+
+            <!-- Password Change Tab -->
+            <div id="tab-password" class="tab-content" style="display:none;">
+                <h3>கடவுச்சொல் மாற்றம்</h3>
+                <form onsubmit="changePassword(event)">
+                    <div class="form-group">
+                        <label>தற்போதைய கடவுச்சொல்</label>
+                        <input type="password" id="current-password" required>
+                    </div>
+                    <div class="form-group">
+                        <label>புதிய கடவுச்சொல்</label>
+                        <input type="password" id="new-password" required minlength="6">
+                    </div>
+                    <div class="form-group">
+                        <label>புதிய கடவுச்சொலை மீண்டும் உள்ளிடவும்</label>
+                        <input type="password" id="confirm-password" required>
+                    </div>
+                    <button type="submit" class="btn btn-download">கடவுச்சொல்லை மாற்று</button>
+                </form>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>தொடர்புக்கு</h3>
+                <ul class="contact-list">
+                    <li>📍 147எ, கிரேட் காட்டன் ரோடு, மத்திய பாகம்,<br>காவல் நிலையம் எதிரில், தூத்துக்குடி-628001</li>
+                    <li>📞 98 43 23 23 24</li>
+                    <li>📞 88 70 23 23 32</li>
+                    <li>📧 dhasscsc@gmail.com</li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>நேரம்</h3>
+                <p>காலை: 09:00 முதல் 07:00 வரை</p>
+                <p>ஞாயிறு விடுமுறை</p>
+            </div>
+            <div class="footer-section">
+                <h3>விரைவு இணைப்புகள்</h3>
+                <ul>
+                    <li><a href="#services" style="color:#fff; text-decoration:none;">சேவைகள்</a></li>
+                    <li><a href="#complaints" style="color:#fff; text-decoration:none;">புகார்கள்</a></li>
+                    <li><a href="#calendar" style="color:#fff; text-decoration:none;">நிகழ்வுகள்</a></li>
+                    <li><a href="#videos" style="color:#fff; text-decoration:none;">கல்வி வீடியோக்கள்</a></li>
+                </ul>
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid #444;">
+            &copy; 2023 தாஸ் பொது சேவை மையம். அனைத்து உரிமைகளும் பாதுகாக்கப்பட்டவை.
+        </div>
+    </footer>
+
+    <!-- Toast Message -->
+    <div id="toast" class="toast">செய்தி சேமிக்கப்பட்டது!</div>
+
+    <!-- Status Update Modal -->
+    <div id="status-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <h3>விண்ணப்ப நிலை மாற்றம்</h3>
+            <div class="form-group">
+                <label>நிலை</label>
+                <select id="update-status">
+                    <option value="pending">நிலுவையில்</option>
+                    <option value="processing">செயல்பாட்டில்</option>
+                    <option value="completed">நிறைவுற்றது</option>
+                    <option value="rejected">நிராகரிக்கப்பட்டது</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>கருத்து</label>
+                <textarea id="status-comment" rows="3"></textarea>
+            </div>
+            <button class="btn btn-download" onclick="updateApplicationStatus()">மாற்றம் செய்</button>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. Extended Data Initialization ---
+        const defaultData = {
+            services: [
+                { 
+                    id: 1, 
+                    name: "புதிய ஆதார் கார்டு (New Aadhaar)", 
+                    fee: "Free / ₹30 (Print)", 
+                    docs: ["வயது சான்று", "முகவரி சான்று"], 
+                    link: "#",
+                    processingTime: 7,
+                    ratings: [5, 4, 5, 4],
+                    ratingCount: 4
+                },
+                { 
+                    id: 2, 
+                    name: "பான் கார்டு (PAN Card)", 
+                    fee: "₹110", 
+                    docs: ["ஆதார் கார்டு", "புகைப்படம்"], 
+                    link: "#",
+                    processingTime: 3,
+                    ratings: [4, 5, 4],
+                    ratingCount: 3
+                }
+            ],
+            news: [
+                "புதிய ஆதார் அப்டேட் சேவை விரைவில் கிடைக்கும்!",
+                "தாஸ் சிஎஸ்சி யில் ரயில் டிக்கெட் முன்பதிவு செய்யலாம்."
+            ],
+            photos: [
+                "https://picsum.photos/seed/csc1/1200/400",
+                "https://picsum.photos/seed/csc2/1200/400",
+                "https://picsum.photos/seed/csc3/1200/400"
+            ],
+            videos: [
+                "https://www.youtube.com/watch?v=ScMzIvxBSi4"
+            ],
+            applications: [
+                {
+                    id: "DASS-001",
+                    name: "ராமன்",
+                    phone: "9876543210",
+                    serviceId: 1,
+                    serviceName: "புதிய ஆதார் கார்டு",
+                    date: new Date().toISOString().split('T')[0],
+                    status: "pending",
+                    documents: [],
+                    comments: []
+                }
+            ],
+            complaints: [
+                {
+                    id: 1,
+                    name: "சுரேஷ்",
+                    phone: "9876543211",
+                    message: "சேவை மிகவும் மெதுவாக உள்ளது",
+                    date: new Date().toISOString().split('T')[0],
+                    status: "pending"
+                }
+            ],
+            agents: [
+                {
+                    id: "AGENT-001",
+                    name: "முருகன்",
+                    phone: "9876543212",
+                    address: "தூத்துக்குடி",
+                    aadhar: "1234 5678 9012",
+                    date: new Date().toISOString().split('T')[0],
+                    status: "active"
+                }
+            ],
+            events: [
+                { date: "2024-06-15", title: "ஆதார் கேம்ப்" },
+                { date: "2024-06-20", title: "பான் கார்டு கேம்ப்" },
+                { date: "2024-06-25", title: "ரேஷன் கார்டு புதுப்பிப்பு" }
+            ],
+            adminPassword: "admin" // Default password
+        };
+
+        // Load data from LocalStorage or use Default
+        let appData = JSON.parse(localStorage.getItem('dassCscData'));
+        if (!appData) {
+            appData = defaultData;
+            saveData();
+        }
+
+        // Current date in Tamil
+        const tamilMonths = ["தை", "மாசி", "பங்குனி", "சித்திரை", "வைகாசி", "ஆனி", "ஆடி", "ஆவணி", "புரட்டாசி", "ஐப்பசி", "கார்த்திகை", "மார்கழி"];
+        const today = new Date();
+        const currentDateStr = `${today.getDate()} ${tamilMonths[today.getMonth()]} ${today.getFullYear()}`;
+        document.getElementById('current-date').textContent = currentDateStr;
+
+        // Save data function
+        function saveData() {
+            localStorage.setItem('dassCscData', JSON.stringify(appData));
+            renderAll();
+            updateAdminStats();
+        }
+
+        // --- 2. Rendering Functions ---
+        function renderAll() {
+            renderServices();
+            renderNews();
+            renderSlider();
+            renderVideos();
+            renderCalendar();
+            updateDashboardStats();
+            renderAdminLists();
+        }
+
+        // Render Services with Rating
+        function renderServices() {
+            const container = document.getElementById('services-list');
+            container.innerHTML = '';
+            appData.services.forEach(service => {
+                const docList = service.docs.map(d => `<li>${d}</li>`).join('');
+                
+                // Calculate average rating
+                const avgRating = service.ratings && service.ratings.length > 0 
+                    ? (service.ratings.reduce((a,b) => a + b, 0) / service.ratings.length).toFixed(1)
+                    : 0;
+                
+                // Generate stars
+                const stars = '★'.repeat(Math.floor(avgRating)) + '☆'.repeat(5 - Math.floor(avgRating));
+                
+                // WhatsApp Message
+                const waText = `Hello, I need ${service.name}. Documents required: ${service.docs.join(', ')}. Fee: ${service.fee}`;
+                const waLink = `https://wa.me/919843232324?text=${encodeURIComponent(waText)}`;
+
+                const card = `
+                    <div class="service-card" data-service-id="${service.id}">
+                        <div class="service-header">
+                            <span class="service-name">${service.name}</span>
+                            <span class="service-fee">${service.fee}</span>
+                        </div>
+                        <p style="font-weight:600; font-size:0.9rem; margin-bottom:5px;">தேவையான ஆவணங்கள்:</p>
+                        <ul class="docs-list">
+                            ${docList}
+                        </ul>
+                        <div class="rating">
+                            <div class="stars" onclick="rateService(${service.id})">
+                                ${stars} (${avgRating})
+                            </div>
+                        </div>
+                        <p><small>சராசரி செயலாக்க நேரம்: ${service.processingTime || 7} நாட்கள்</small></p>
+                        <div class="card-actions">
+                            <button class="btn btn-download" onclick="applyForService(${service.id})">விண்ணப்பிக்க</button>
+                            <a href="${waLink}" target="_blank" class="btn btn-whatsapp">WhatsApp</a>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += card;
+            });
+        }
+
+        // Apply for Service Function
+        function applyForService(serviceId) {
+            const service = appData.services.find(s => s.id === serviceId);
+            if (!service) return;
+            
+            const name = prompt("உங்கள் பெயரை உள்ளிடவும்:");
+            if (!name) return;
+            
+            const phone = prompt("உங்கள் தொலைபேசி எண்ணை உள்ளிடவும்:");
+            if (!phone) return;
+            
+            const applicationId = `DASS-${Date.now().toString().slice(-6)}`;
+            
+            const newApplication = {
+                id: applicationId,
+                name: name,
+                phone: phone,
+                serviceId: serviceId,
+                serviceName: service.name,
+                date: new Date().toISOString().split('T')[0],
+                status: "pending",
+                documents: [],
+                comments: []
+            };
+            
+            appData.applications.push(newApplication);
+            saveData();
+            showToast(`விண்ணப்பம் ஏற்றுக்கொள்ளப்பட்டது! உங்கள் டிராக்கிங் ஐடி: ${applicationId}`);
+        }
+
+        // Rate Service Function
+        function rateService(serviceId) {
+            const rating = prompt("இந்த சேவைக்கு மதிப்பீடு தருக (1-5):");
+            if (rating && rating >= 1 && rating <= 5) {
+                const service = appData.services.find(s => s.id === serviceId);
+                if (service) {
+                    if (!service.ratings) service.ratings = [];
+                    service.ratings.push(parseInt(rating));
+                    service.ratingCount = service.ratings.length;
+                    saveData();
+                    showToast("மதிப்பீடு சேமிக்கப்பட்டது!");
+                }
+            }
+        }
+
+        // Track Application
+        function trackApplication() {
+            const trackingId = document.getElementById('tracking-id').value.trim();
+            if (!trackingId) {
+                showToast("டிராக்கிங் ஐடியை உள்ளிடவும்");
+                return;
+            }
+            
+            const application = appData.applications.find(app => app.id === trackingId);
+            const resultDiv = document.getElementById('tracking-result');
+            
+            if (application) {
+                const statusMap = {
+                    pending: "நிலுவையில்",
+                    processing: "செயல்பாட்டில்",
+                    completed: "நிறைவுற்றது",
+                    rejected: "நிராகரிக்கப்பட்டது"
+                };
+                
+                const statusClass = {
+                    pending: "status-pending",
+                    processing: "status-processing",
+                    completed: "status-completed",
+                    rejected: "status-rejected"
+                };
+                
+                resultDiv.innerHTML = `
+                    <div style="background: white; padding: 20px; border-radius: 8px;">
+                        <h3>விண்ணப்ப விவரங்கள்</h3>
+                        <p><strong>டிராக்கிங் ஐடி:</strong> ${application.id}</p>
+                        <p><strong>பெயர்:</strong> ${application.name}</p>
+                        <p><strong>சேவை:</strong> ${application.serviceName}</p>
+                        <p><strong>தேதி:</strong> ${application.date}</p>
+                        <p><strong>நிலை:</strong> <span class="status-badge ${statusClass[application.status]}">${statusMap[application.status]}</span></p>
+                        ${application.comments && application.comments.length > 0 ? 
+                            `<p><strong>கடைசி புதுப்பிப்பு:</strong> ${application.comments[application.comments.length - 1]}</p>` : ''}
+                    </div>
+                `;
+            } else {
+                resultDiv.innerHTML = '<div style="color: red; padding: 20px; text-align: center;">டிராக்கிங் ஐடி கிடைக்கவில்லை</div>';
+            }
+        }
+
+        // Update Dashboard Statistics
+        function updateDashboardStats() {
+            const today = new Date().toISOString().split('T')[0];
+            const todayApps = appData.applications.filter(app => app.date === today).length;
+            const pendingApps = appData.applications.filter(app => app.status === 'pending').length;
+            const completedApps = appData.applications.filter(app => app.status === 'completed').length;
+            
+            document.getElementById('total-services').textContent = appData.services.length;
+            document.getElementById('today-applications').textContent = todayApps;
+            document.getElementById('pending-applications').textContent = pendingApps;
+            document.getElementById('completed-applications').textContent = completedApps;
+        }
+
+        // Update Admin Statistics
+        function updateAdminStats() {
+            const pendingComplaints = appData.complaints.filter(c => c.status === 'pending').length;
+            
+            document.getElementById('admin-total-services').textContent = appData.services.length;
+            document.getElementById('admin-total-applications').textContent = appData.applications.length;
+            document.getElementById('admin-pending-complaints').textContent = pendingComplaints;
+            document.getElementById('admin-total-agents').textContent = appData.agents.length;
+            
+            // Update admin chart
+            updateAdminChart();
+        }
+
+        // Update Admin Chart
+        function updateAdminChart() {
+            const ctx = document.getElementById('adminChart').getContext('2d');
+            const statusCounts = {
+                pending: appData.applications.filter(a => a.status === 'pending').length,
+                processing: appData.applications.filter(a => a.status === 'processing').length,
+                completed: appData.applications.filter(a => a.status === 'completed').length,
+                rejected: appData.applications.filter(a => a.status === 'rejected').length
+            };
+            
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['நிலுவையில்', 'செயல்பாட்டில்', 'நிறைவுற்றவை', 'நிராகரிக்கப்பட்டவை'],
+                    datasets: [{
+                        data: Object.values(statusCounts),
+                        backgroundColor: ['#ffc107', '#17a2b8', '#28a745', '#dc3545']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+        }
+
+        // Render News Scroller
+        function renderNews() {
+            const ticker = document.getElementById('news-ticker-content');
+            ticker.textContent = appData.news.join("   ***   ");
+        }
+
+        // Render Photo Slider
+        function renderSlider() {
+            const slider = document.getElementById('hero-slider');
+            slider.innerHTML = '';
+            appData.photos.forEach((photo, index) => {
+                const div = document.createElement('div');
+                div.className = `slide ${index === 0 ? 'active' : ''}`;
+                div.style.backgroundImage = `url('${photo}')`;
+                slider.appendChild(div);
+            });
+        }
+        
+        // Auto Slider
+        let currentSlide = 0;
+        setInterval(() => {
+            const slides = document.querySelectorAll('.slide');
+            if(slides.length > 0) {
+                slides[currentSlide].classList.remove('active');
+                currentSlide = (currentSlide + 1) % slides.length;
+                slides[currentSlide].classList.add('active');
+            }
+        }, 4000);
+
+        // Render Videos
+        function renderVideos() {
+            const container = document.getElementById('video-list');
+            container.innerHTML = '';
+            appData.videos.forEach(vidUrl => {
+                const videoId = getYoutubeId(vidUrl);
+                if(videoId) {
+                    container.innerHTML += `
+                        <div class="video-wrapper">
+                            <iframe src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                    `;
+                }
+            });
+        }
+
+        // Render Calendar
+        function renderCalendar() {
+            const monthNames = ["ஜனவரி", "பிப்ரவரி", "மார்ச்", "ஏப்ரல்", "மே", "ஜூன்", "ஜூலை", "ஆகஸ்ட்", "செப்டம்பர்", "அக்டோபர்", "நவம்பர்", "டிசம்பர்"];
+            const currentDate = new Date();
+            const currentYear = currentDate.getFullYear();
+            const currentMonth = currentDate.getMonth();
+            
+            document.getElementById('current-month').textContent = `${monthNames[currentMonth]} ${currentYear}`;
+            
+            // Get first day and number of days in month
+            const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+            const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+            
+            // Create calendar days
+            const calendarDays = document.getElementById('calendar-days');
+            calendarDays.innerHTML = '';
+            
+            // Empty cells for first day
+            for (let i = 0; i < firstDay; i++) {
+                calendarDays.innerHTML += '<div class="calendar-day"></div>';
+            }
+            
+            // Days of the month
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                const event = appData.events.find(e => e.date === dateStr);
+                const dayClass = event ? 'calendar-day event' : 'calendar-day';
+                const title = event ? event.title : '';
+                
+                calendarDays.innerHTML += `<div class="${dayClass}" title="${title}">${day}</div>`;
+            }
+        }
+
+        function changeMonth(direction) {
+            // This is a simplified version - would need full implementation
+            showToast("முழுமையான காலண்டர் செயல்பாடு விரைவில் கிடைக்கும்");
+        }
+
+        function getYoutubeId(url) {
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : null;
+        }
+
+        // --- 3. Complaint Submission ---
+        function submitComplaint(event) {
+            event.preventDefault();
+            const name = document.getElementById('complaint-name').value;
+            const phone = document.getElementById('complaint-phone').value;
+            const text = document.getElementById('complaint-text').value;
+            
+            const complaint = {
+                id: Date.now(),
+                name: name,
+                phone: phone,
+                message: text,
+                date: new Date().toISOString().split('T')[0],
+                status: "pending"
+            };
+            
+            appData.complaints.push(complaint);
+            saveData();
+            showToast("புகார் சமர்ப்பிக்கப்பட்டது!");
+            document.getElementById('complaint-form').reset();
+        }
+
+        // --- 4. Agent Registration ---
+        function registerAgent(event) {
+            event.preventDefault();
+            const name = document.getElementById('agent-name').value;
+            const phone = document.getElementById('agent-phone').value;
+            const address = document.getElementById('agent-address').value;
+            const aadhar = document.getElementById('agent-aadhar').value;
+            
+            const agent = {
+                id: `AGENT-${Date.now().toString().slice(-6)}`,
+                name: name,
+                phone: phone,
+                address: address,
+                aadhar: aadhar,
+                date: new Date().toISOString().split('T')[0],
+                status: "active"
+            };
+            
+            appData.agents.push(agent);
+            saveData();
+            showToast("ஏஜெண்ட் பதிவு வெற்றிகரமாக நிறைவுற்றது!");
+            document.getElementById('agent-form').reset();
+        }
+
+        // --- 5. Admin Functions ---
+        function toggleAdmin() {
+            const panel = document.getElementById('admin-panel');
+            if (panel.style.display === 'none') {
+                const pass = prompt("நிர்வாக கடவுச்சொல்லை உள்ளிடவும்:");
+                if (pass === appData.adminPassword) {
+                    panel.style.display = 'block';
+                    updateAdminStats();
+                    panel.scrollIntoView({ behavior: 'smooth' });
+                } else if (pass !== null) {
+                    showToast("தவறான கடவுச்சொல்!");
+                }
+            } else {
+                panel.style.display = 'none';
+                document.getElementById('main-content').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
+            document.getElementById(tabId).style.display = 'block';
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        function showToast(msg) {
+            const x = document.getElementById("toast");
+            x.textContent = msg;
+            x.className = "toast show";
+            setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+        }
+
+        // Render Admin Lists
+        function renderAdminLists() {
+            // Service Table
+            const tbody = document.getElementById('admin-service-list');
+            tbody.innerHTML = '';
+            appData.services.forEach(s => {
+                const avgRating = s.ratings && s.ratings.length > 0 
+                    ? (s.ratings.reduce((a,b) => a + b, 0) / s.ratings.length).toFixed(1)
+                    : 0;
+                    
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${s.name}</td>
+                        <td>${s.fee}</td>
+                        <td>${s.processingTime || 7} நாட்கள்</td>
+                        <td>${avgRating} (${s.ratingCount || 0})</td>
+                        <td>
+                            <button class="btn btn-edit" onclick="editService(${s.id})">திருத்து</button>
+                            <button class="btn btn-delete" onclick="deleteService(${s.id})">அழி</button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            // Applications List
+            const appTbody = document.getElementById('admin-application-list');
+            appTbody.innerHTML = '';
+            appData.applications.forEach(app => {
+                const statusMap = {
+                    pending: "நிலுவையில்",
+                    processing: "செயல்பாட்டில்",
+                    completed: "நிறைவுற்றது",
+                    rejected: "நிராகரிக்கப்பட்டது"
+                };
+                
+                appTbody.innerHTML += `
+                    <tr>
+                        <td>${app.id}</td>
+                        <td>${app.name}</td>
+                        <td>${app.serviceName}</td>
+                        <td>${app.date}</td>
+                        <td>${statusMap[app.status]}</td>
+                        <td>
+                            <button class="btn btn-edit" onclick="openStatusModal('${app.id}')">நிலை மாற்று</button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            // News List
+            const newsList = document.getElementById('admin-news-list');
+            newsList.innerHTML = '';
+            appData.news.forEach((n, idx) => {
+                newsList.innerHTML += `<li>${n} <button class="btn btn-delete" onclick="deleteNews(${idx})" style="margin-left:10px;">x</button></li>`;
+            });
+
+            // Photos List
+            const photoList = document.getElementById('admin-photo-list');
+            photoList.innerHTML = '';
+            appData.photos.forEach((p, idx) => {
+                photoList.innerHTML += `
+                    <div style="border:1px solid #ccc; padding:5px;">
+                        <img src="${p}" width="100" height="60">
+                        <button class="btn btn-delete" onclick="deletePhoto(${idx})" style="width:100%; margin-top:5px;">x</button>
+                    </div>
+                `;
+            });
+
+            // Videos List
+            const videoList = document.getElementById('admin-video-list');
+            videoList.innerHTML = '';
+            appData.videos.forEach((v, idx) => {
+                videoList.innerHTML += `
+                    <div style="border:1px solid #ccc; padding:5px;">
+                        <a href="${v}" target="_blank">வீடியோ ${idx+1}</a>
+                        <button class="btn btn-delete" onclick="deleteVideo(${idx})" style="display:block; margin-top:5px;">x</button>
+                    </div>
+                `;
+            });
+
+            // Complaints List
+            const complaintTbody = document.getElementById('admin-complaint-list');
+            complaintTbody.innerHTML = '';
+            appData.complaints.forEach(c => {
+                const statusMap = {
+                    pending: "நிலுவையில்",
+                    resolved: "தீர்க்கப்பட்டது",
+                    closed: "மூடப்பட்டது"
+                };
+                
+                complaintTbody.innerHTML += `
+                    <tr>
+                        <td>${c.date}</td>
+                        <td>${c.name}</td>
+                        <td>${c.phone}</td>
+                        <td>${c.message.substring(0, 50)}...</td>
+                        <td>${statusMap[c.status]}</td>
+                        <td>
+                            <button class="btn btn-edit" onclick="resolveComplaint(${c.id})">தீர்க்கப்பட்டது</button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            // Agents List
+            const agentTbody = document.getElementById('admin-agent-list');
+            agentTbody.innerHTML = '';
+            appData.agents.forEach(a => {
+                agentTbody.innerHTML += `
+                    <tr>
+                        <td>${a.id}</td>
+                        <td>${a.name}</td>
+                        <td>${a.phone}</td>
+                        <td>${a.address.substring(0, 30)}...</td>
+                        <td>${a.date}</td>
+                        <td>
+                            <button class="btn btn-delete" onclick="deleteAgent('${a.id}')">அழி</button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        // Service Management
+        let editingServiceId = null;
+
+        function handleServiceSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('s-name').value;
+            const fee = document.getElementById('s-fee').value;
+            const docsStr = document.getElementById('s-docs').value;
+            const link = document.getElementById('s-link').value;
+            const processingTime = document.getElementById('s-processing-time').value;
+            
+            const docs = docsStr.split(',').map(d => d.trim());
+
+            if (editingServiceId) {
+                // Update existing service
+                const service = appData.services.find(s => s.id === editingServiceId);
+                if (service) {
+                    service.name = name;
+                    service.fee = fee;
+                    service.docs = docs;
+                    service.link = link;
+                    service.processingTime = parseInt(processingTime);
+                }
+                editingServiceId = null;
+            } else {
+                // Add new service
+                const newService = {
+                    id: Date.now(),
+                    name, 
+                    fee, 
+                    docs, 
+                    link,
+                    processingTime: parseInt(processingTime),
+                    ratings: [],
+                    ratingCount: 0
+                };
+                appData.services.push(newService);
+            }
+            
+            saveData();
+            showToast(editingServiceId ? "சேவை புதுப்பிக்கப்பட்டது!" : "சேவை சேர்க்கப்பட்டது!");
+            resetForm();
+        }
+
+        function editService(id) {
+            const service = appData.services.find(s => s.id === id);
+            if (service) {
+                document.getElementById('s-name').value = service.name;
+                document.getElementById('s-fee').value = service.fee;
+                document.getElementById('s-docs').value = service.docs.join(', ');
+                document.getElementById('s-link').value = service.link;
+                document.getElementById('s-processing-time').value = service.processingTime || 7;
+                document.getElementById('service-id').value = service.id;
+                editingServiceId = id;
+                
+                // Scroll to form
+                document.getElementById('service-form').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function deleteService(id) {
+            if(confirm("நிச்சயமாக அழிக்க வேண்டுமா?")) {
+                appData.services = appData.services.filter(s => s.id !== id);
+                saveData();
+                showToast("சேவை அழிக்கப்பட்டது!");
+            }
+        }
+
+        function resetForm() {
+            document.getElementById('service-form').reset();
+            document.getElementById('service-id').value = '';
+            editingServiceId = null;
+        }
+
+        // News Management
+        function handleNewsSubmit(e) {
+            e.preventDefault();
+            const text = document.getElementById('news-input').value;
+            appData.news.push(text);
+            saveData();
+            showToast("செய்தி சேர்க்கப்பட்டது!");
+            document.getElementById('news-input').value = '';
+        }
+
+        function deleteNews(idx) {
+            appData.news.splice(idx, 1);
+            saveData();
+        }
+
+        // Photo Management
+        function handlePhotoSubmit(e) {
+            e.preventDefault();
+            const url = document.getElementById('photo-input').value;
+            appData.photos.push(url);
+            saveData();
+            showToast("படம் சேர்க்கப்பட்டது!");
+            document.getElementById('photo-input').value = '';
+        }
+
+        function deletePhoto(idx) {
+            appData.photos.splice(idx, 1);
+            saveData();
+        }
+
+        // Video Management
+        function handleVideoSubmit(e) {
+            e.preventDefault();
+            const url = document.getElementById('video-input').value;
+            if(getYoutubeId(url)) {
+                appData.videos.push(url);
+                saveData();
+                showToast("வீடியோ சேர்க்கப்பட்டது!");
+                document.getElementById('video-input').value = '';
+            } else {
+                alert("சரியான YouTube லிங்கை கொடுக்கவும்");
+            }
+        }
+
+        function deleteVideo(idx) {
+            appData.videos.splice(idx, 1);
+            saveData();
+        }
+
+        // Application Status Management
+        let currentApplicationId = null;
+
+        function openStatusModal(appId) {
+            currentApplicationId = appId;
+            document.getElementById('status-modal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('status-modal').style.display = 'none';
+            currentApplicationId = null;
+        }
+
+        function updateApplicationStatus() {
+            if (!currentApplicationId) return;
+            
+            const status = document.getElementById('update-status').value;
+            const comment = document.getElementById('status-comment').value;
+            
+            const application = appData.applications.find(app => app.id === currentApplicationId);
+            if (application) {
+                application.status = status;
+                if (comment) {
+                    if (!application.comments) application.comments = [];
+                    application.comments.push(`${new Date().toLocaleDateString('ta-IN')}: ${comment}`);
+                }
+                saveData();
+                closeModal();
+                showToast("விண்ணப்ப நிலை புதுப்பிக்கப்பட்டது!");
+            }
+        }
+
+        // Complaint Resolution
+        function resolveComplaint(id) {
+            const complaint = appData.complaints.find(c => c.id === id);
+            if (complaint) {
+                complaint.status = "resolved";
+                saveData();
+                showToast("புகார் தீர்க்கப்பட்டதாக குறிக்கப்பட்டது!");
+            }
+        }
+
+        // Agent Management
+        function deleteAgent(agentId) {
+            if(confirm("ஏஜெண்டை நிச்சயமாக நீக்க வேண்டுமா?")) {
+                appData.agents = appData.agents.filter(a => a.id !== agentId);
+                saveData();
+                showToast("ஏஜெண்ட் நீக்கப்பட்டார்!");
+            }
+        }
+
+        // Search Applications
+        function searchApplications() {
+            const searchTerm = document.getElementById('search-application').value.toLowerCase();
+            const filteredApps = appData.applications.filter(app => 
+                app.id.toLowerCase().includes(searchTerm) ||
+                app.name.toLowerCase().includes(searchTerm) ||
+                app.phone.includes(searchTerm)
+            );
+            
+            const appTbody = document.getElementById('admin-application-list');
+            appTbody.innerHTML = '';
+            
+            filteredApps.forEach(app => {
+                const statusMap = {
+                    pending: "நிலுவையில்",
+                    processing: "செயல்பாட்டில்",
+                    completed: "நிறைவுற்றது",
+                    rejected: "நிராகரிக்கப்பட்டது"
+                };
+                
+                appTbody.innerHTML += `
+                    <tr>
+                        <td>${app.id}</td>
+                        <td>${app.name}</td>
+                        <td>${app.serviceName}</td>
+                        <td>${app.date}</td>
+                        <td>${statusMap[app.status]}</td>
+                        <td>
+                            <button class="btn btn-edit" onclick="openStatusModal('${app.id}')">நிலை மாற்று</button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        // Send Bulk Notification
+        function sendBulkNotification() {
+            const message = document.getElementById('notification-message').value;
+            if (!message) {
+                alert("செய்தியை உள்ளிடவும்");
+                return;
+            }
+            
+            // Simulate sending notifications
+            const phones = [...new Set(appData.applications.map(app => app.phone))];
+            showToast(`${phones.length} பேருக்கு நினைவூட்டல் அனுப்பப்படுகிறது...`);
+            document.getElementById('notification-message').value = '';
+        }
+
+        // Password Change Function
+        function changePassword(event) {
+            event.preventDefault();
+            const current = document.getElementById('current-password').value;
+            const newPass = document.getElementById('new-password').value;
+            const confirmPass = document.getElementById('confirm-password').value;
+            
+            if (current !== appData.adminPassword) {
+                showToast("தற்போதைய கடவுச்சொல் தவறானது!");
+                return;
+            }
+            
+            if (newPass !== confirmPass) {
+                showToast("புதிய கடவுச்சொல்கள் பொருந்தவில்லை!");
+                return;
+            }
+            
+            if (newPass.length < 6) {
+                showToast("கடவுச்சொல் குறைந்தது 6 எழுத்துகள் இருக்க வேண்டும்!");
+                return;
+            }
+            
+            appData.adminPassword = newPass;
+            saveData();
+            showToast("கடவுச்சொல் வெற்றிகரமாக மாற்றப்பட்டது!");
+            document.getElementById('current-password').value = '';
+            document.getElementById('new-password').value = '';
+            document.getElementById('confirm-password').value = '';
+        }
+
+        // --- 6. Initialize ---
+        renderAll();
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('status-modal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>
